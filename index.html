@@ -27,30 +27,21 @@
 </head>
 <body class="bg-slate-100 text-slate-800 dark:bg-slate-950 dark:text-slate-100 transition-colors duration-200 pb-24 select-none">
 
-  <!-- MODAL LOGIN PIN -->
+  <!-- MODAL LOGIN 1 PIN BERSAMA -->
   <div id="loginModal" class="fixed inset-0 z-50 flex items-center justify-center bg-slate-950/95 backdrop-blur-md p-4 hidden">
     <div class="glass-card w-full max-w-sm rounded-3xl p-6 text-center shadow-2xl border border-slate-700/50">
       <div class="w-14 h-14 mx-auto mb-3 rounded-2xl bg-gradient-to-tr from-blue-600 to-indigo-500 flex items-center justify-center text-white shadow-lg">
         <i data-lucide="wallet" class="w-7 h-7"></i>
       </div>
       <h2 class="text-xl font-bold mb-1">Dompet Berdua</h2>
-      <p class="text-xs text-slate-400 mb-5">Pilih pengguna untuk perangkat ini</p>
+      <p class="text-xs text-slate-400 mb-5">Masukkan PIN keamanan kas keluarga</p>
 
-      <div class="grid grid-cols-2 gap-3 mb-4">
-        <button type="button" onclick="selectRole('Suami')" id="btnRoleSuami" class="role-btn py-3 rounded-xl border border-slate-700 font-semibold text-sm flex flex-col items-center gap-1 transition">
-          <i data-lucide="user" class="w-5 h-5 text-blue-400"></i> Suami
-        </button>
-        <button type="button" onclick="selectRole('Istri')" id="btnRoleIstri" class="role-btn py-3 rounded-xl border border-slate-700 font-semibold text-sm flex flex-col items-center gap-1 transition">
-          <i data-lucide="heart" class="w-5 h-5 text-pink-400"></i> Istri
-        </button>
-      </div>
-
-      <input type="password" id="pinInput" maxlength="6" inputmode="numeric" placeholder="PIN (Default: 1234 / 5678)"
-        class="w-full px-4 py-3 rounded-xl bg-slate-900/90 border border-slate-700 text-center tracking-widest text-lg font-bold text-white mb-4 focus:outline-none focus:border-blue-500">
+      <input type="password" id="pinInput" maxlength="6" inputmode="numeric" placeholder="PIN (Default: 1234)"
+        class="w-full px-4 py-3.5 rounded-xl bg-slate-900/90 border border-slate-700 text-center tracking-widest text-lg font-bold text-white mb-4 focus:outline-none focus:border-blue-500">
 
       <button type="button" onclick="handleLogin()" id="btnLoginSubmit"
-        class="w-full py-3 rounded-xl bg-blue-600 hover:bg-blue-500 text-white font-semibold shadow-lg shadow-blue-600/30 transition">
-        Masuk Aplikasi
+        class="w-full py-3.5 rounded-xl bg-blue-600 hover:bg-blue-500 text-white font-semibold shadow-lg shadow-blue-600/30 transition">
+        Buka Aplikasi
       </button>
       <p id="loginError" class="text-xs text-rose-400 mt-3 hidden"></p>
     </div>
@@ -65,28 +56,21 @@
         </div>
         <div>
           <h1 class="text-sm font-bold leading-tight">Dompet Berdua</h1>
-          <div class="flex items-center gap-1.5">
-            <span id="activeUserBadge" class="text-[11px] font-medium px-2 py-0.5 rounded-full bg-blue-500/15 text-blue-500 dark:text-blue-400">Suami</span>
-            <button onclick="logoutUser()" class="text-[10px] text-slate-400 underline">Ganti</button>
-          </div>
+          <span class="text-[11px] text-slate-400">Kas & Anggaran Keluarga</span>
         </div>
       </div>
 
       <div class="flex items-center gap-2">
         <input type="month" id="monthPicker" onchange="loadData()"
           class="text-xs font-semibold px-2.5 py-1.5 rounded-xl bg-slate-200/70 dark:bg-slate-800 border border-slate-300 dark:border-slate-700 focus:outline-none">
-        <button onclick="toggleTheme()" class="p-2 rounded-xl bg-slate-200/70 dark:bg-slate-800 text-slate-600 dark:text-slate-300">
+        <button onclick="toggleTheme()" class="p-2 rounded-xl bg-slate-200/70 dark:bg-slate-800 text-slate-600 dark:text-slate-300" title="Ganti Tema">
           <i data-lucide="sun" class="w-4 h-4 hidden dark:block"></i>
           <i data-lucide="moon" class="w-4 h-4 block dark:hidden"></i>
         </button>
+        <button onclick="lockApp()" class="p-2 rounded-xl bg-slate-200/70 dark:bg-slate-800 text-slate-600 dark:text-slate-300" title="Kunci Aplikasi">
+          <i data-lucide="lock" class="w-4 h-4"></i>
+        </button>
       </div>
-    </div>
-
-    <div class="max-w-lg mx-auto mt-2.5 grid grid-cols-4 gap-1 p-1 rounded-xl bg-slate-200/70 dark:bg-slate-900/90 text-xs font-semibold">
-      <button onclick="setScopeFilter('ALL')" id="scope-ALL" class="scope-tab py-1.5 rounded-lg bg-white dark:bg-slate-800 shadow-sm text-blue-600 dark:text-blue-400">Semua</button>
-      <button onclick="setScopeFilter('Bersama')" id="scope-Bersama" class="scope-tab py-1.5 rounded-lg text-slate-500">Bersama</button>
-      <button onclick="setScopeFilter('Pribadi Suami')" id="scope-Pribadi Suami" class="scope-tab py-1.5 rounded-lg text-slate-500">Suami</button>
-      <button onclick="setScopeFilter('Pribadi Istri')" id="scope-Pribadi Istri" class="scope-tab py-1.5 rounded-lg text-slate-500">Istri</button>
     </div>
   </header>
 
@@ -101,7 +85,7 @@
     <section id="view-dashboard" class="space-y-4">
       <div class="rounded-3xl p-5 bg-gradient-to-br from-slate-900 via-slate-900 to-blue-950 text-white shadow-xl border border-slate-800">
         <div class="flex justify-between items-start mb-1">
-          <span class="text-xs text-slate-400">Arus Kas Bersih (<span id="lblScopeName">Semua</span>)</span>
+          <span class="text-xs text-slate-400">Sisa Arus Kas Bulan Ini</span>
           <span id="savingRateBadge" class="text-[11px] px-2 py-0.5 rounded-full bg-emerald-500/20 text-emerald-300 font-semibold">Saving 0%</span>
         </div>
         <div id="statNetCashflow" class="text-2xl font-extrabold tracking-tight mb-4">Rp 0</div>
@@ -128,34 +112,20 @@
         </div>
       </div>
 
+      <!-- Grafik Pengeluaran -->
       <div class="glass-card rounded-2xl p-4 border border-slate-200/70 dark:border-slate-800">
-        <h3 class="text-xs font-bold uppercase tracking-wider text-slate-400 mb-3">Aktivitas Suami vs Istri</h3>
-        <div class="grid grid-cols-2 gap-3 text-xs">
-          <div class="p-3 rounded-xl bg-blue-500/10 border border-blue-500/20">
-            <div class="font-bold text-blue-500 mb-1 flex items-center gap-1"><i data-lucide="user" class="w-3.5 h-3.5"></i> Suami</div>
-            <div class="text-slate-400">Keluar: <span id="suamiOut" class="font-bold text-slate-800 dark:text-slate-100">Rp 0</span></div>
-            <div class="text-slate-400">Masuk: <span id="suamiIn" class="font-semibold text-emerald-500">Rp 0</span></div>
-          </div>
-          <div class="p-3 rounded-xl bg-pink-500/10 border border-pink-500/20">
-            <div class="font-bold text-pink-500 mb-1 flex items-center gap-1"><i data-lucide="heart" class="w-3.5 h-3.5"></i> Istri</div>
-            <div class="text-slate-400">Keluar: <span id="istriOut" class="font-bold text-slate-800 dark:text-slate-100">Rp 0</span></div>
-            <div class="text-slate-400">Masuk: <span id="istriIn" class="font-semibold text-emerald-500">Rp 0</span></div>
-          </div>
-        </div>
-      </div>
-
-      <div class="glass-card rounded-2xl p-4 border border-slate-200/70 dark:border-slate-800">
-        <h3 class="text-xs font-bold uppercase tracking-wider text-slate-400 mb-3">Grafik Pengeluaran</h3>
+        <h3 class="text-xs font-bold uppercase tracking-wider text-slate-400 mb-3">Proporsi Pengeluaran</h3>
         <div class="relative h-52 flex items-center justify-center">
           <canvas id="categoryChart"></canvas>
           <p id="emptyChartMsg" class="text-xs text-slate-400 hidden">Belum ada pengeluaran bulan ini</p>
         </div>
       </div>
 
+      <!-- 5 Transaksi Terakhir -->
       <div class="glass-card rounded-2xl p-4 border border-slate-200/70 dark:border-slate-800">
         <div class="flex justify-between items-center mb-3">
           <h3 class="text-xs font-bold uppercase tracking-wider text-slate-400">Transaksi Terakhir</h3>
-          <button onclick="switchTab('history')" class="text-xs text-blue-500 font-semibold">Semua</button>
+          <button onclick="switchTab('history')" class="text-xs text-blue-500 font-semibold">Lihat Semua</button>
         </div>
         <div id="recentTrxList" class="space-y-2.5"></div>
       </div>
@@ -173,37 +143,35 @@
           </div>
           <input type="hidden" id="inpTipe" value="Pengeluaran">
 
+          <!-- Nominal dengan Auto-Format Ribuan / Jutaan -->
           <div>
             <label class="block text-xs font-semibold text-slate-400 mb-1">Nominal (Rp)</label>
-            <input type="number" id="inpNominal" required min="100" step="any" inputmode="numeric" placeholder="0"
-              class="w-full px-4 py-3 rounded-xl bg-slate-100 dark:bg-slate-900 border border-slate-300 dark:border-slate-700 text-xl font-extrabold focus:outline-none focus:border-blue-500">
+            <div class="relative flex items-center">
+              <span class="absolute left-4 text-sm font-bold text-slate-400">Rp</span>
+              <input type="text" id="inpNominal" required inputmode="numeric" placeholder="0" oninput="formatNominalInput(this)"
+                class="w-full pl-11 pr-4 py-3 rounded-xl bg-slate-100 dark:bg-slate-900 border border-slate-300 dark:border-slate-700 text-xl font-extrabold focus:outline-none focus:border-blue-500">
+            </div>
           </div>
 
-          <div class="grid grid-cols-2 gap-3">
+          <!-- Grid Tanggal & Sumber Dana (Sumber Dana otomatis sembunyi saat Pemasukan) -->
+          <div id="dateWalletGrid" class="grid grid-cols-2 gap-3">
             <div>
               <label class="block text-xs font-semibold text-slate-400 mb-1">Tanggal</label>
               <input type="date" id="inpTanggal" required
                 class="w-full px-3 py-2.5 rounded-xl bg-slate-100 dark:bg-slate-900 border border-slate-300 dark:border-slate-700 text-xs font-semibold">
             </div>
-            <div>
-              <label class="block text-xs font-semibold text-slate-400 mb-1">Alokasi Biaya</label>
-              <select id="inpKepemilikan" class="w-full px-3 py-2.5 rounded-xl bg-slate-100 dark:bg-slate-900 border border-slate-300 dark:border-slate-700 text-xs font-semibold">
-                <option value="Bersama">Bersama (Rumah Tangga)</option>
-                <option value="Pribadi Suami">Pribadi Suami</option>
-                <option value="Pribadi Istri">Pribadi Istri</option>
+            <div id="walletFieldWrapper">
+              <label class="block text-xs font-semibold text-slate-400 mb-1">Sumber Dana</label>
+              <select id="inpWallet" class="w-full px-3 py-2.5 rounded-xl bg-slate-100 dark:bg-slate-900 border border-slate-300 dark:border-slate-700 text-xs font-semibold">
+                <option value="Tunai">Tunai</option>
+                <option value="Rekening">Rekening</option>
               </select>
             </div>
           </div>
 
-          <div class="grid grid-cols-2 gap-3">
-            <div>
-              <label class="block text-xs font-semibold text-slate-400 mb-1">Kategori</label>
-              <select id="inpKategori" required class="w-full px-3 py-2.5 rounded-xl bg-slate-100 dark:bg-slate-900 border border-slate-300 dark:border-slate-700 text-xs font-semibold"></select>
-            </div>
-            <div>
-              <label class="block text-xs font-semibold text-slate-400 mb-1">Sumber Dana</label>
-              <select id="inpWallet" required class="w-full px-3 py-2.5 rounded-xl bg-slate-100 dark:bg-slate-900 border border-slate-300 dark:border-slate-700 text-xs font-semibold"></select>
-            </div>
+          <div>
+            <label class="block text-xs font-semibold text-slate-400 mb-1">Kategori</label>
+            <select id="inpKategori" required class="w-full px-3 py-2.5 rounded-xl bg-slate-100 dark:bg-slate-900 border border-slate-300 dark:border-slate-700 text-xs font-semibold"></select>
           </div>
 
           <div>
@@ -271,18 +239,29 @@
     }
 
     let appState = {
-      role: localStorage.getItem('couple_finance_role') || '',
-      selectedLoginRole: 'Suami',
-      scopeFilter: 'ALL',
+      isUnlocked: localStorage.getItem('dompet_berdua_unlocked') === 'true',
       transactions: [],
       budgets: [],
-      wallets: [],
+      wallets: ['Tunai', 'Rekening'],
       expCats: [],
       incCats: [],
       chartInstance: null
     };
 
-    const formatRp = (num) => 'Rp ' + Number(num || 0).toLocaleString('id-ID');
+    // Format tampilan angka ribuan/jutaan dengan titik (contoh: 13.000.000)
+    const formatAngka = (num) => Number(num || 0).toLocaleString('id-ID');
+    const formatRp = (num) => 'Rp ' + formatAngka(num);
+
+    // Auto-format saat user mengetik nominal di input form
+    function formatNominalInput(el) {
+      const rawDigits = el.value.replace(/\D/g, '');
+      el.value = rawDigits ? Number(rawDigits).toLocaleString('id-ID') : '';
+    }
+
+    // Ambil nilai angka murni dari input yang sudah diformat titik
+    function getRawNominal(formattedStr) {
+      return Number(String(formattedStr || '').replace(/\D/g, '')) || 0;
+    }
 
     document.addEventListener('DOMContentLoaded', () => {
       lucide.createIcons();
@@ -299,11 +278,9 @@
       document.getElementById('monthPicker').value = `${yyyy}-${mm}`;
       document.getElementById('inpTanggal').value = `${yyyy}-${mm}-${dd}`;
 
-      if (!appState.role) {
+      if (!appState.isUnlocked) {
         document.getElementById('loginModal').classList.remove('hidden');
-        selectRole('Suami');
       } else {
-        updateUserBadge();
         loadData();
       }
     });
@@ -324,15 +301,7 @@
       return await response.json();
     }
 
-    // --- LOGIN ---
-    function selectRole(role) {
-      appState.selectedLoginRole = role;
-      document.getElementById('btnRoleSuami').classList.toggle('border-blue-500', role === 'Suami');
-      document.getElementById('btnRoleSuami').classList.toggle('bg-blue-500/10', role === 'Suami');
-      document.getElementById('btnRoleIstri').classList.toggle('border-pink-500', role === 'Istri');
-      document.getElementById('btnRoleIstri').classList.toggle('bg-pink-500/10', role === 'Istri');
-    }
-
+    // --- LOGIN PIN ---
     async function handleLogin() {
       const pin = document.getElementById('pinInput').value;
       const btn = document.getElementById('btnLoginSubmit');
@@ -344,12 +313,11 @@
       err.classList.add('hidden');
 
       try {
-        const res = await apiPost({ action: 'login', role: appState.selectedLoginRole, pin: pin });
+        const res = await apiPost({ action: 'login', pin: pin });
         if (res.success) {
-          appState.role = res.role;
-          localStorage.setItem('couple_finance_role', res.role);
+          appState.isUnlocked = true;
+          localStorage.setItem('dompet_berdua_unlocked', 'true');
           document.getElementById('loginModal').classList.add('hidden');
-          updateUserBadge();
           loadData();
         } else {
           err.textContent = res.message || 'PIN salah';
@@ -360,23 +328,15 @@
         err.classList.remove('hidden');
       } finally {
         btn.disabled = false;
-        btn.textContent = 'Masuk Aplikasi';
+        btn.textContent = 'Buka Aplikasi';
       }
     }
 
-    function logoutUser() {
-      localStorage.removeItem('couple_finance_role');
-      appState.role = '';
+    function lockApp() {
+      localStorage.removeItem('dompet_berdua_unlocked');
+      appState.isUnlocked = false;
       document.getElementById('pinInput').value = '';
       document.getElementById('loginModal').classList.remove('hidden');
-    }
-
-    function updateUserBadge() {
-      const badge = document.getElementById('activeUserBadge');
-      badge.textContent = appState.role;
-      badge.className = appState.role === 'Istri'
-        ? 'text-[11px] font-medium px-2 py-0.5 rounded-full bg-pink-500/15 text-pink-500 dark:text-pink-400'
-        : 'text-[11px] font-medium px-2 py-0.5 rounded-full bg-blue-500/15 text-blue-500 dark:text-blue-400';
     }
 
     // --- LOAD DATA ---
@@ -391,7 +351,7 @@
 
         appState.transactions = data.transactions || [];
         appState.budgets = data.budgets || [];
-        appState.wallets = data.wallets || [];
+        appState.wallets = (data.wallets && data.wallets.length) ? data.wallets : ['Tunai', 'Rekening'];
         appState.expCats = data.expCats || [];
         appState.incCats = data.incCats || [];
 
@@ -414,13 +374,19 @@
       document.getElementById('inpTipe').value = type;
       const btnOut = document.getElementById('btnTypeOut');
       const btnIn = document.getElementById('btnTypeIn');
+      const walletWrapper = document.getElementById('walletFieldWrapper');
+      const dateWalletGrid = document.getElementById('dateWalletGrid');
 
       if (type === 'Pengeluaran') {
         btnOut.className = 'py-2 rounded-lg text-xs font-bold bg-rose-500 text-white shadow';
         btnIn.className = 'py-2 rounded-lg text-xs font-bold text-slate-500';
+        walletWrapper.classList.remove('hidden');
+        dateWalletGrid.className = 'grid grid-cols-2 gap-3';
       } else {
         btnIn.className = 'py-2 rounded-lg text-xs font-bold bg-emerald-500 text-white shadow';
         btnOut.className = 'py-2 rounded-lg text-xs font-bold text-slate-500';
+        walletWrapper.classList.add('hidden');
+        dateWalletGrid.className = 'grid grid-cols-1 gap-3';
       }
       updateCategoryDropdown();
     }
@@ -441,24 +407,6 @@
       });
     }
 
-    function setScopeFilter(scope) {
-      appState.scopeFilter = scope;
-      document.getElementById('lblScopeName').textContent = scope === 'ALL' ? 'Semua' : scope;
-
-      document.querySelectorAll('.scope-tab').forEach(btn => {
-        btn.className = 'scope-tab py-1.5 rounded-lg text-slate-500';
-      });
-      document.getElementById(`scope-${scope}`).className =
-        'scope-tab py-1.5 rounded-lg bg-white dark:bg-slate-800 shadow-sm text-blue-600 dark:text-blue-400';
-
-      refreshAllViews();
-    }
-
-    function getFilteredTransactions() {
-      if (appState.scopeFilter === 'ALL') return appState.transactions;
-      return appState.transactions.filter(t => t.kepemilikan === appState.scopeFilter);
-    }
-
     function refreshAllViews() {
       renderDashboard();
       renderBudget();
@@ -466,21 +414,12 @@
     }
 
     function renderDashboard() {
-      const trxs = getFilteredTransactions();
+      const trxs = appState.transactions;
       let totalIn = 0, totalOut = 0;
-      let suamiIn = 0, suamiOut = 0, istriIn = 0, istriOut = 0;
 
       trxs.forEach(t => {
         if (t.tipe === 'Pemasukan') totalIn += t.nominal;
         else totalOut += t.nominal;
-      });
-
-      appState.transactions.forEach(t => {
-        if (t.diinputOleh === 'Suami') {
-          if (t.tipe === 'Pemasukan') suamiIn += t.nominal; else suamiOut += t.nominal;
-        } else if (t.diinputOleh === 'Istri') {
-          if (t.tipe === 'Pemasukan') istriIn += t.nominal; else istriOut += t.nominal;
-        }
       });
 
       const net = totalIn - totalOut;
@@ -490,11 +429,6 @@
       document.getElementById('statIncome').textContent = formatRp(totalIn);
       document.getElementById('statExpense').textContent = formatRp(totalOut);
       document.getElementById('savingRateBadge').textContent = `Saving ${savingRate}%`;
-
-      document.getElementById('suamiOut').textContent = formatRp(suamiOut);
-      document.getElementById('suamiIn').textContent = formatRp(suamiIn);
-      document.getElementById('istriOut').textContent = formatRp(istriOut);
-      document.getElementById('istriIn').textContent = formatRp(istriIn);
 
       const recentContainer = document.getElementById('recentTrxList');
       const recent = trxs.slice(0, 5);
@@ -507,7 +441,7 @@
     }
 
     function renderChart() {
-      const trxs = getFilteredTransactions().filter(t => t.tipe === 'Pengeluaran');
+      const trxs = appState.transactions.filter(t => t.tipe === 'Pengeluaran');
       const grouped = {};
       trxs.forEach(t => {
         grouped[t.kategori] = (grouped[t.kategori] || 0) + t.nominal;
@@ -594,17 +528,21 @@
     }
 
     async function promptEditBudget(kategori, currentLimit) {
-      const val = prompt(`Batas anggaran bulanan baru untuk "${kategori}" (angka saja):`, currentLimit);
-      if (val === null || isNaN(val) || val.trim() === '') return;
+      const formattedCurrent = formatAngka(currentLimit);
+      const val = prompt(`Batas anggaran bulanan baru untuk "${kategori}" (contoh: 2.500.000):`, formattedCurrent);
+      if (val === null || val.trim() === '') return;
+
+      const numericLimit = getRawNominal(val);
+      if (numericLimit <= 0) return;
 
       document.getElementById('loadingBanner').classList.remove('hidden');
-      await apiPost({ action: 'updateBudget', kategori: kategori, limit: Number(val) });
+      await apiPost({ action: 'updateBudget', kategori: kategori, limit: numericLimit });
       loadData();
     }
 
     function renderHistory() {
       const query = (document.getElementById('searchTrx').value || '').toLowerCase();
-      const trxs = getFilteredTransactions().filter(t =>
+      const trxs = appState.transactions.filter(t =>
         t.kategori.toLowerCase().includes(query) ||
         t.catatan.toLowerCase().includes(query) ||
         t.sumberDana.toLowerCase().includes(query)
@@ -619,7 +557,7 @@
 
     function buildTrxCard(t, allowDelete) {
       const isInc = t.tipe === 'Pemasukan';
-      const userColor = t.diinputOleh === 'Istri' ? 'text-pink-400 bg-pink-500/10' : 'text-blue-400 bg-blue-500/10';
+      const walletBadge = (!isInc && t.sumberDana && t.sumberDana !== '-') ? ` • ${t.sumberDana}` : '';
 
       return `
         <div class="glass-card p-3 rounded-2xl border border-slate-200/70 dark:border-slate-800 flex items-center justify-between gap-2">
@@ -628,21 +566,15 @@
               <i data-lucide="${isInc ? 'arrow-down-left' : 'shopping-bag'}" class="w-4 h-4"></i>
             </div>
             <div class="min-w-0">
-              <div class="flex items-center gap-1.5">
-                <span class="text-xs font-bold truncate">${t.kategori}</span>
-                <span class="text-[10px] px-1.5 py-0.2 rounded ${userColor} font-semibold">${t.diinputOleh}</span>
-              </div>
+              <div class="text-xs font-bold truncate">${t.kategori}</div>
               <div class="text-[11px] text-slate-400 truncate">
-                ${t.tanggal} • ${t.sumberDana} ${t.catatan ? '• ' + t.catatan : ''}
+                ${t.tanggal}${walletBadge}${t.catatan ? ' • ' + t.catatan : ''}
               </div>
             </div>
           </div>
           <div class="text-right shrink-0 flex items-center gap-2">
-            <div>
-              <div class="text-xs font-extrabold ${isInc ? 'text-emerald-500' : 'text-slate-800 dark:text-slate-100'}">
-                ${isInc ? '+' : '-'}${formatRp(t.nominal)}
-              </div>
-              <div class="text-[10px] text-slate-400">${t.kepemilikan}</div>
+            <div class="text-xs font-extrabold ${isInc ? 'text-emerald-500' : 'text-slate-800 dark:text-slate-100'}">
+              ${isInc ? '+' : '-'}${formatRp(t.nominal)}
             </div>
             ${allowDelete ? `<button onclick="removeTrx('${t.id}')" class="p-1.5 text-slate-400 hover:text-rose-500"><i data-lucide="trash-2" class="w-3.5 h-3.5"></i></button>` : ''}
           </div>
@@ -652,19 +584,24 @@
 
     async function submitTransaction(e) {
       e.preventDefault();
+      const rawNominal = getRawNominal(document.getElementById('inpNominal').value);
+      if (rawNominal <= 0) {
+        alert('Masukkan nominal transaksi yang valid.');
+        return;
+      }
+
       const btn = document.getElementById('btnSubmitTrx');
       btn.disabled = true;
       btn.innerHTML = 'Menyimpan...';
 
+      const tipe = document.getElementById('inpTipe').value;
       const payload = {
-        tipe: document.getElementById('inpTipe').value,
-        nominal: document.getElementById('inpNominal').value,
+        tipe: tipe,
+        nominal: rawNominal,
         tanggal: document.getElementById('inpTanggal').value,
-        kepemilikan: document.getElementById('inpKepemilikan').value,
         kategori: document.getElementById('inpKategori').value,
-        sumberDana: document.getElementById('inpWallet').value,
-        catatan: document.getElementById('inpCatatan').value,
-        diinputOleh: appState.role
+        sumberDana: tipe === 'Pemasukan' ? '-' : document.getElementById('inpWallet').value,
+        catatan: document.getElementById('inpCatatan').value
       };
 
       try {
